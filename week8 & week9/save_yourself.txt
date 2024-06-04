@@ -1,0 +1,153 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define gc getchar_unlocked
+#define fo(i, n) for (i = 0; i < n; i++)
+#define Fo(i, k, n) for (i = k; k < n ? i < n : i > n; k < n ? i += 1 : i -= 1)
+#define int long long
+#define pb push_back
+#define mp make_pair
+#define PI 3.1415926535897932384626
+#define mod 1000000007
+#define endl "\n"
+typedef pair<int, int> pii;
+typedef pair<int, int> pl;
+typedef vector<int> vi;
+typedef vector<int> vl;
+typedef vector<pii> vpii;
+typedef vector<pl> vpl;
+typedef vector<vi> vvi;
+typedef vector<vl> vvl;
+
+bool f=true;
+int dx[]={-1,1,0,0};
+int dy[]={0,0,1,-1};
+int n,m;
+void printvec(vector<int> a){
+    for(int i=0;i<a.size();i++){
+        cout<<a[i]<<" ";
+    }
+    cout<<endl;
+}
+char g[1001][1001];
+int mon[1001][1001];
+int A[1001][1001];
+bool check(int x,int y){
+    if(x>=0 && x<n && y>=0 && y<m && g[x][y]!=1){
+        return true;
+    }
+    return false;
+}
+
+void solve(){
+    int n,m;
+    cin>>n>>m;                                                      
+    
+    queue<pii> monster,a;
+    memset(mon,-1,sizeof(mon));
+    memset(A,-1,sizeof(mon));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cin>>g[i][j];
+            //cout<<i<<" "<<j<<" "<<g[i][j]<<endl;
+            if(g[i][j]=='M'){
+                mon[i][j]=0;
+                
+                monster.push({i,j});
+            }
+            if(g[i][j]=='A'){
+                A[i][j]=0;
+                a.push({i,j});
+            }
+        }
+    }
+
+    while(!monster.empty()){
+        auto s=monster.front();
+        int x=s.first;
+        int y=s.second;
+        monster.pop();
+        
+        for(int i=0;i<4;i++){
+            if(x+dx[i]>=0 && x+dx[i]<n && y+dy[i]>=0 && y+dy[i]<m && g[x+dx[i]][y+dy[i]]!='#'){
+                if(mon[x+dx[i]][y+dy[i]]!=-1) continue;
+                monster.push({x+dx[i],y+dy[i]});
+                mon[x+dx[i]][y+dy[i]]=mon[x][y]+1;
+            }
+        }
+    }
+    // for(int i=0;i<n;i++){
+    //     for(int j=0;j<m;j++){
+    //         cout<<mon[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+    while(!a.empty()){
+        auto s=a.front();
+        int x=s.first;
+        int y=s.second;
+        a.pop();
+        
+        for(int i=0;i<4;i++){
+            if(x+dx[i]>=0 && x+dx[i]<n && y+dy[i]>=0 && y+dy[i]<m && g[x+dx[i]][y+dy[i]]!='#'){
+                if(A[x+dx[i]][y+dy[i]]!=-1) continue;
+                a.push({x+dx[i],y+dy[i]});
+                A[x+dx[i]][y+dy[i]]=A[x][y]+1;
+            }
+        }
+    }
+    // for(int i=0;i<n;i++){
+    //     for(int j=0;j<m;j++){
+    //         cout<<A[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+    int miin=1e9;
+    for(int i=0;i<n;i++){
+        if(g[i][0]!='#' && (mon[i][0]>A[i][0] || mon[i][0]==-1)){
+            miin=min(miin,A[i][0]);
+        }
+
+        if(g[i][m-1]!='#' && (mon[i][m-1]>A[i][m-1] ||mon[i][m-1]==-1))
+        {
+            miin=min(miin,A[i][m-1]);
+        }
+    }
+    for(int i=0;i<m;i++){
+        if(g[0][i]!='#' && (mon[0][i]>A[0][i]||mon[0][i]==-1)){
+            miin=min(miin,A[0][i]);
+        }
+
+        if(g[n-1][i]!='#' && (mon[n-1][i]>A[n-1][i]||mon[n-1][i]==-1)){
+            miin=min(miin,A[n-1][i]);
+        }
+    }
+    if(miin==1e9){
+        cout<<"NO"<<endl;
+    }
+    else{
+        cout<<"YES"<<endl;
+        cout<<miin<<endl;
+    }
+    
+}
+int32_t main()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int N=100;
+    int t=1;
+    
+    //cin>>t;
+    
+    while (t--)
+    {
+        
+        solve();
+    }
+    return 0;
+}

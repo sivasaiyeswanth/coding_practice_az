@@ -1,0 +1,117 @@
+//does not run properly
+#include <bits/stdc++.h>
+using namespace std;
+#define gc getchar_unlocked
+#define fo(i, n) for (i = 0; i < n; i++)
+#define Fo(i, k, n) for (i = k; k < n ? i < n : i > n; k < n ? i += 1 : i -= 1)
+#define int long long
+#define deb(x) cout << #x << "=" << x << endl
+#define pb push_back
+#define mp make_pair
+#define F first
+#define S second
+
+#define clr(x) memset(x, false, sizeof(x))
+#define sortall(x) sort(all(x))
+#define tr(it, a) for (auto it = a.begin(); it != a.end(); it++)
+#define PI 3.1415926535897932384626
+#define mod 1000000007
+#define endl "\n"
+typedef pair<int, int> pii;
+typedef pair<int, int> pl;
+typedef vector<int> vi;
+typedef vector<int> vl;
+typedef vector<pii> vpii;
+typedef vector<pl> vpl;
+typedef vector<vi> vvi;
+typedef vector<vl> vvl;
+
+void solve(){
+   int n,x;
+   cin>>n;
+   vector<int> a;
+   for(int i=0;i<n;i++){
+    int j;cin>>j;a.push_back(j);
+   }
+//    for(int i=0;i<a.size();i++){
+//     cout<<a[i]<<endl;
+//    }
+   int q;
+   cin>>q;
+   int pref[1000001][31];
+   memset(pref,0,sizeof(pref));
+   for(int i=1;i<=a.size();i++){
+    for(int j=0;j<31;j++){
+        if((a[i]>>j)%2==1){
+            pref[i][j]=1;
+        }   
+    }
+   }
+//    for(int i=0;i<a.size();i++){
+//     for(int j=0;j<32;j++){
+//         cout<<pref[i][j]<<" ";
+//     }
+//     cout<<endl;
+//    }
+    for(int j=0;j<31;j++){
+        for(int i=1;i<=a.size();i++){
+            
+        pref[i][j]=pref[i][j]+pref[i-1][j];
+        // if(pref[i][j]==3){
+        //     cout<<i<<" "<<j<<endl;
+        //     cout<<pref[i][j]<<" "<<pref[i-1][j]<<endl;
+        // }
+    }
+   }
+//    cout<<"after prefixing"<<endl;
+//    for(int i=0;i<a.size();i++){
+//     for(int j=0;j<32;j++){
+//         cout<<pref[i][j]<<" ";
+//     }
+//     cout<<endl;
+//    }
+   while(q--){
+    int l,r;
+    cin>>l>>r;
+    int count[32];
+
+    for(int i=0;i<31;i++){
+
+        count[i]=pref[r][i]-pref[l-1][i];
+    }
+    int x1=0,x2=0,x3=0;
+    double p=(l-p+1.0)/2;
+    for(int i=0;i<31;i++){
+        if(count[i]<p){
+            x1|=(1ll<<i);
+        }
+        if(count[i]!=(l-p+1)){
+            x2|=(1ll<<i);
+        }
+        if(count[i]){
+            x3|=(1ll<<i);
+        }
+    }
+    bitset<32> x11(x1);
+    cout<<x11<<endl;  
+    cout<<x1+x2+x3<<endl;
+   }
+}
+int32_t main()
+{
+#ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int t;
+    cin >> t;
+    
+    while (t--)
+    {
+        solve();
+    }
+    return 0;
+}
